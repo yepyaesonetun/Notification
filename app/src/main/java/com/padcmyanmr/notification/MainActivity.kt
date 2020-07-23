@@ -1,5 +1,6 @@
 package com.padcmyanmr.notification
 
+import android.app.Notification.EXTRA_NOTIFICATION_ID
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -24,13 +25,14 @@ class MainActivity : AppCompatActivity() {
 
         val notificationId : Int = 1996
         val notificationId02 : Int = 1997
-        var textTitle = "Hello Friend"
-        var textContent = "I am a New Notification"
+        val notificationId03 : Int = 1998
 
 
         /***
          * Just Notification
          */
+        var textTitle = "Hello Friend"
+        var textContent = "I am a New Notification"
 
         var builder = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -67,6 +69,30 @@ class MainActivity : AppCompatActivity() {
             with(NotificationManagerCompat.from(this)) {
                 // notificationId is a unique int for each notification that you must define
                 notify(notificationId02, builder2.build())
+            }
+        }
+
+        /***
+         * Notification with Actions
+         */
+        val snoozeIntent = Intent(this, MainActivity::class.java).apply {
+            putExtra(EXTRA_NOTIFICATION_ID, 0)
+        }
+        val snoozePendingIntent: PendingIntent =
+                PendingIntent.getBroadcast(this, 0, snoozeIntent, 0)
+        val builder3 = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("My notification")
+                .setContentText("Hello Action")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .addAction(android.R.drawable.star_off, "Snooze",
+                        snoozePendingIntent)
+
+        btnNotiWithActions.setOnClickListener {
+            with(NotificationManagerCompat.from(this)) {
+                // notificationId is a unique int for each notification that you must define
+                notify(notificationId03, builder3.build())
             }
         }
     }
