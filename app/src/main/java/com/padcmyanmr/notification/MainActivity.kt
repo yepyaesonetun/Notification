@@ -1,6 +1,7 @@
 package com.padcmyanmr.notification
 
 import android.app.Notification.EXTRA_NOTIFICATION_ID
+import android.app.Notification.VISIBILITY_PRIVATE
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val notificationId : Int = 1996
         val notificationId02 : Int = 1997
         val notificationId03 : Int = 1998
+        val notificationId04 : Int = 1999
 
 
         /***
@@ -86,6 +88,8 @@ class MainActivity : AppCompatActivity() {
                 .setContentText("Hello Action")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
+//                .setFullScreenIntent(pendingIntent, true)  // urgent noti type only use
+//                .setVisibility(VISIBILITY_PRIVATE)   // visibility modes
                 .addAction(android.R.drawable.star_off, "Snooze",
                         snoozePendingIntent)
 
@@ -93,6 +97,37 @@ class MainActivity : AppCompatActivity() {
             with(NotificationManagerCompat.from(this)) {
                 // notificationId is a unique int for each notification that you must define
                 notify(notificationId03, builder3.build())
+            }
+        }
+
+
+        /***
+         * Notification with Progress
+         */
+        val builder4 = NotificationCompat.Builder(this, CHANNEL_ID).apply {
+            setContentTitle("Picture Download")
+            setContentText("Download in progress")
+            setSmallIcon(android.R.drawable.stat_sys_download)
+        }
+        val PROGRESS_MAX = 100
+        val PROGRESS_CURRENT = 10
+        NotificationManagerCompat.from(this).apply {
+            // Issue the initial notification with zero progress
+            builder4.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false)
+
+            // Do the job here that tracks the progress.
+            // Usually, this should be in a
+            // worker thread
+            // To show progress, update PROGRESS_CURRENT and update the notification with:
+            // builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
+            // notificationManager.notify(notificationId, builder.build());
+
+            // When done, update the notification one more time to remove the progress bar
+            builder.setContentText("Download complete")
+                    .setProgress(0, 0, false)
+
+            btnProgress.setOnClickListener {
+                notify(notificationId04, builder4.build())
             }
         }
     }
