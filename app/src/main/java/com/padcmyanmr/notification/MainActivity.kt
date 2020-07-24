@@ -153,6 +153,7 @@ class MainActivity : AppCompatActivity() {
             .setContentText("imageDescription")
             .setLargeIcon(bitmap)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setBadgeIconType(NotificationCompat.BADGE_ICON_LARGE)
             .setStyle(NotificationCompat.BigPictureStyle()
                 .bigPicture(bitmap)
                 .bigLargeIcon(bitmap))  // null
