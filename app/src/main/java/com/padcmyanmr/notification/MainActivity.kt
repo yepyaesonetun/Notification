@@ -7,11 +7,15 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         val notificationId02 : Int = 1997
         val notificationId03 : Int = 1998
         val notificationId04 : Int = 1999
+        val notificationId05 : Int = 2000
 
 
         /***
@@ -128,6 +133,34 @@ class MainActivity : AppCompatActivity() {
 
             btnProgress.setOnClickListener {
                 notify(notificationId04, builder4.build())
+            }
+        }
+
+
+        /***
+         * Notification with Image
+         */
+
+        // Get drawable from resource
+        val drawable: Drawable? = ContextCompat.getDrawable(this,R.drawable.day)
+
+        // Convert drawable to bitmap
+        val bitmap: Bitmap? = drawable?.toBitmap()
+
+        val builder5 = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setContentTitle("imageTitle")
+            .setContentText("imageDescription")
+            .setLargeIcon(bitmap)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setStyle(NotificationCompat.BigPictureStyle()
+                .bigPicture(bitmap)
+                .bigLargeIcon(bitmap))  // null
+
+        btnBigImage.setOnClickListener {
+            with(NotificationManagerCompat.from(this)) {
+                // notificationId is a unique int for each notification that you must define
+                notify(notificationId05, builder5.build())
             }
         }
     }
