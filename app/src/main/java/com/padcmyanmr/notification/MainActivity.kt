@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         val notificationId03 : Int = 1998
         val notificationId04 : Int = 1999
         val notificationId05 : Int = 2000
+        val notificationId06 : Int = 2001
 
 
         /***
@@ -162,6 +164,26 @@ class MainActivity : AppCompatActivity() {
             with(NotificationManagerCompat.from(this)) {
                 // notificationId is a unique int for each notification that you must define
                 notify(notificationId05, builder5.build())
+            }
+        }
+
+
+
+        /*
+        Custom Notification
+         */
+        val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
+
+        val customNotification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_background)
+//            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+//            .setCustomContentView(notificationLayout)
+//            .setCustomBigContentView(notificationLayout)
+
+        btnCustom.setOnClickListener {
+            with(NotificationManagerCompat.from(this)) {
+                // notificationId is a unique int for each notification that you must define
+                notify(notificationId06, customNotification.build())
             }
         }
     }
